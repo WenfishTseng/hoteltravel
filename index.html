@@ -14,44 +14,47 @@
     />
   </head>
   <body>
-    <main class="container py-5" id="app">
-      <div class="row justify-content-center">
-        <div class="col-lg-4">
-          <form>
-            <div class="form-floating mb-3">
-              <input
-                v-model="user.username"
-                type="email"
-                class="form-control"
-                id="floatingInput"
-                placeholder="name@example.com"
-                required
-                autofocus
-              />
-              <label for="floatingInput">Email address</label>
-            </div>
-            <div class="form-floating">
-              <input
-                v-model="user.password"
-                type="password"
-                class="form-control"
-                id="floatingPassword"
-                placeholder="Password"
-                required
-              />
-              <label for="floatingPassword">Password</label>
-            </div>
-            <button
-              @click="login"
-              class="btn btn-lg btn-primary w-100 mt-3"
-              type="button"
-            >
-              登入
-            </button>
-          </form>
+    <div class="bg-light vh-100">
+      <main class="container py-5" id="app">
+        <div class="row justify-content-center">
+          <div class="col-lg-4">
+            <h2 class="text-center">Sign In</h2>
+            <form class="bg-white p-5">
+              <div class="form-floating mb-3">
+                <input
+                  v-model="user.username"
+                  type="email"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="name@example.com"
+                  required
+                  autofocus
+                />
+                <label for="floatingInput">Email address</label>
+              </div>
+              <div class="form-floating">
+                <input
+                  v-model="user.password"
+                  type="password"
+                  class="form-control"
+                  id="floatingPassword"
+                  placeholder="Password"
+                  required
+                />
+                <label for="floatingPassword">Password</label>
+              </div>
+              <button
+                @click="login"
+                class="btn btn-lg btn-primary w-100 mt-3"
+                type="button"
+              >
+                登入
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.9.1/axios.min.js"
       integrity="sha512-Xk3wWei2TGrsh9kDSBKUMIjw/86sLUvhtnv9f7fOuIwhhiUTKz8szkWkzHthrM5Bb3Bu9idSzkxOrkzhcneuiw=="

@@ -30,7 +30,10 @@ createApp({
         .get(`${this.apiUrl}/api/${this.apiPath}/admin/products/all`)
         .then((response) => {
           console.log("getData", response.data);
-          if (response.data.success) this.products = response.data.products;
+          if (response.data.success) {
+            console.log("this.products", Object.values(response.data.products));
+            this.products = Object.values(response.data.products);
+          }
         })
         .catch((error) => {
           console.log("getData", error);

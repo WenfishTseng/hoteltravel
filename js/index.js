@@ -20,7 +20,7 @@ createApp({
         // 存cookie
         document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
         // 跳轉頁面
-        window.location = "products.html";
+        window.location = "edit-page.html";
       });
     },
     checkAdmin() {
@@ -35,10 +35,10 @@ createApp({
       axios
         .post(`${this.apiUrl}/api/user/check`)
         .then(() => {
-          window.location = "products.html";
+          window.location = "edit-page.html";
         })
         .catch((error) => {
-          console.log("嘗試登入失敗", error);
+          alert(error.data.message);
         });
     },
   },

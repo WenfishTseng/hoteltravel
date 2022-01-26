@@ -68,17 +68,11 @@ const app = {
       apiPath: "yuritatest",
       products: [],
       tempProduct: {},
+      isNew: false,
     };
   },
   methods: {
     checkAdmin() {
-      // 抓token
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)hexToken\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-      // post headers 放 token
-      axios.defaults.headers.common["Authorization"] = token;
       axios
         .post(`${this.apiUrl}/api/user/check`)
         .then(() => {
@@ -102,41 +96,88 @@ const app = {
         });
     },
     editProduct() {
+      console.log("this.isNew", this.isNew);
+      this.tempProduct = JSON.parse(JSON.stringify(this.tempProduct));
+      if (this.isNew) {
+        // https://vue3-course-api.hexschool.io/v2/api/yuritatest/admin/product
+        const url = `${this.apiUrl}/api/${this.apiPath}/admin/product`;
+        console.log("this.tempProduct", this.tempProduct);
+        axios
+          .post(url, { data: this.tempProduct })
+          .then((response) => {
+            this.getData();
+            this.closeProductModal();
+            console.log("editProduct", response.data);
+            this.tempProduct = "";
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        const url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.tempProduct.id}`;
+        axios
+          .put(url, { data: this.tempProduct })
+          .then((response) => {
+            this.getData();
+            this.closeProductModal();
+            console.log("editProduct", response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
+    deleteProduct() {
+      const url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.tempProduct.id}`;
       axios
-        .put(
-          `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.tempProduct.id}`
-        )
+        .delete(url)
         .then((response) => {
-          console.log("editProduct", response.data);
+          this.getData();
+          this.closeDeleteModal();
+          console.log("deleteProduct", response.data);
         })
         .catch((error) => {
           console.log(error);
         });
     },
     openProductModal(openState, item) {
-      productModal.show();
       switch (openState) {
         case "edit":
+          productModal.show();
           this.tempProduct = item;
+          this.isNew = false;
           break;
         case "add":
-          this.tempProduct = "";
+          productModal.show();
+          this.isNew = true;
           break;
         case "delete":
+          this.tempProduct = item;
+          delProductModal.show();
           break;
       }
     },
-    openDeleteModal() {
-      delProductModal.show();
+    closeProductModal() {
+      productModal.hide();
+    },
+    closeDeleteModal() {
+      delProductModal.hide();
     },
   },
   mounted() {
-    // 確認身分
-    this.checkAdmin();
+    // 抓token
+    const token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)hexToken\s*\=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
+    // post headers 放 token
+    axios.defaults.headers.common["Authorization"] = token;
     productModal = new bootstrap.Modal(document.querySelector("#productModal"));
     delProductModal = new bootstrap.Modal(
       document.querySelector("#delProductModal")
     );
+    // 確認身分
+    this.checkAdmin();
   },
 };
 

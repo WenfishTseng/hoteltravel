@@ -44,60 +44,17 @@ const appRoot = createApp({
           window.location = "index.html";
         });
     },
+    // 改成串接分頁API
     getData(page = 1) {
-      // pagination
+      // 預設第1頁
       axios
         .get(`${this.apiUrl}/api/${this.apiPath}/admin/products/?page=${page}`)
         .then((response) => {
           if (response.data.success) {
-            // this.products = Object.values(response.data.products);
-            // console.log(response.data.products);
-            // this.products = Object.values(response.data.products);
             this.products = response.data.products;
             this.pagination = response.data.pagination;
             console.log(response.data);
           }
-        })
-        .catch((error) => {
-          alert(error.data.message);
-        });
-    },
-    editProduct() {
-      // this.tempProduct = JSON.parse(JSON.stringify(this.tempProduct));
-      if (this.isNew) {
-        const url = `${this.apiUrl}/api/${this.apiPath}/admin/product`;
-        axios
-          .post(url, { data: this.tempProduct })
-          .then((response) => {
-            this.getData();
-            this.closeProductModal();
-            alert(response.data.message);
-          })
-          .catch((error) => {
-            alert(error.data.message);
-          });
-      } else {
-        const url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.tempProduct.id}`;
-        axios
-          .put(url, { data: this.tempProduct })
-          .then((response) => {
-            this.getData();
-            this.closeProductModal();
-            alert(response.data.message);
-          })
-          .catch((error) => {
-            alert(error.data.message);
-          });
-      }
-    },
-    deleteProduct() {
-      const url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.tempProduct.id}`;
-      axios
-        .delete(url)
-        .then((response) => {
-          this.getData();
-          this.closeDeleteModal();
-          alert(response.data.message);
         })
         .catch((error) => {
           alert(error.data.message);
@@ -184,7 +141,7 @@ const appRoot = createApp({
   },
 });
 
-appRoot.component("edit", {
+appRoot.component("edit-modal", {
   props: ["tempProduct", "isNew"],
   template: "#edit-template",
   methods: {
@@ -202,8 +159,7 @@ appRoot.component("edit", {
           productModal.hide();
         })
         .catch((error) => {
-          alert(error);
-          console.log("axios[method]", method, error);
+          alert(error.data.message);
           productModal.hide();
         });
     },

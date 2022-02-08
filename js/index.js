@@ -15,13 +15,18 @@ createApp({
   methods: {
     login() {
       const url = `${this.apiUrl}/admin/signin`;
-      axios.post(url, this.user).then((response) => {
-        const { token, expired } = response.data;
-        // 存cookie
-        document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
-        // 跳轉頁面
-        window.location = "edit-page.html";
-      });
+      axios
+        .post(url, this.user)
+        .then((response) => {
+          const { token, expired } = response.data;
+          // 存cookie
+          document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
+          // 跳轉頁面
+          window.location = "edit-page.html";
+        })
+        .catch((error) => {
+          alert(error.data.message);
+        });
     },
     checkAdmin() {
       // 取得token

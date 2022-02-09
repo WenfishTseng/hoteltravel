@@ -9,7 +9,7 @@
   </head>
   <body>
     <script type="text/x-template" id="edit-template">
-      <div class="modal-dialog modal-xl">
+            <div class="modal-dialog modal-xl">
         <div class="modal-content border-0">
           <div class="modal-header bg-dark text-white">
             <h5 id="productModalLabel" class="modal-title">
@@ -21,14 +21,14 @@
               @click="closeProductModal"
             ></button>
           </div>
+
           <div class="modal-body">
             <div class="row">
+              <!-- 新增主要圖片 imageUrl-->
               <div class="col-sm-4">
                 <div class="mb-2">
                   <div class="mb-3">
-                    <label for="imageUrl" class="form-label"
-                      >輸入圖片網址</label
-                    >
+                    <label for="imageUrl" class="form-label">輸入圖片網址</label>
                     <input
                       type="text"
                       class="form-control"
@@ -36,27 +36,39 @@
                       v-model="tempProduct.imageUrl"
                     />
                   </div>
-                  <img
-                    class="img-fluid"
-                    :src="tempProduct.imageUrl"
-                    alt=""
-                  />
+                  <img class="img-fluid" :src="tempProduct.imageUrl" />
                 </div>
-                <div>
+
+                <h5>多圖上傳</h5>
+                <div v-if="Array.isArray(tempProduct.imagesUrl)" >
+                  <template
+                    v-for="(img, key) in tempProduct.imagesUrl"
+                    :key="key + '123'"
+                  >
+                    <input
+                      type="text"
+                      class="form-control my-2"
+                      placeholder="請輸入圖片連結"
+                      v-model="img"
+                    />
+                    <img class="img-fluid mb-2" :src="img" v-if="img"/>
+                  </template>
                   <button
-                    class="btn btn-outline-primary btn-sm d-block w-100"
+                    v-if="!tempProduct.imagesUrl.length || tempProduct.imagesUrl[tempProduct.imagesUrl.length-1]"
+                    @click="tempProduct.imagesUrl.push('')"
+                    class="btn btn-outline-primary btn-sm d-block w-100 mt-2"
                   >
                     新增圖片
                   </button>
-                </div>
-                <div>
                   <button
+                    @click="tempProduct.imagesUrl.pop()"
                     class="btn btn-outline-danger btn-sm d-block w-100 my-3"
                   >
                     刪除圖片
                   </button>
                 </div>
               </div>
+
               <div class="col-sm-8">
                 <div class="mb-3">
                   <label for="title" class="form-label">標題</label>
@@ -94,9 +106,7 @@
 
                 <div class="row">
                   <div class="mb-3 col-md-6">
-                    <label for="origin_price" class="form-label"
-                      >原價</label
-                    >
+                    <label for="origin_price" class="form-label">原價</label>
                     <input
                       id="origin_price"
                       type="number"
@@ -121,9 +131,7 @@
                 <hr />
 
                 <div class="mb-3">
-                  <label for="description" class="form-label"
-                    >產品描述</label
-                  >
+                  <label for="description" class="form-label">產品描述</label>
                   <textarea
                     id="description"
                     type="text"
@@ -170,11 +178,7 @@
             >
               取消
             </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="editProduct"
-            >
+            <button type="button" class="btn btn-primary" @click="editProduct">
               確認
             </button>
           </div>

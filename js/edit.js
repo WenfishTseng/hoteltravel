@@ -16,7 +16,7 @@ const appRoot = createApp({
       apiPath: "yuritatest",
       coupons: [],
       products: [],
-      tempProduct: { imageUrl: [] },
+      tempProduct: { imagesUrl: [] },
       isNew: false,
       // page
       pagination: {},
@@ -53,7 +53,6 @@ const appRoot = createApp({
           if (response.data.success) {
             this.products = response.data.products;
             this.pagination = response.data.pagination;
-            console.log(response.data);
           }
         })
         .catch((error) => {
@@ -66,9 +65,10 @@ const appRoot = createApp({
           productModal.show();
           this.tempProduct = JSON.parse(JSON.stringify(item));
           this.isNew = false;
+          console.log(this.tempProduct);
           break;
         case "add":
-          this.tempProduct = {};
+          this.tempProduct = { imagesUrl: [] };
           productModal.show();
           this.isNew = true;
           break;
@@ -107,11 +107,11 @@ const appRoot = createApp({
     },
     closeProductModal() {
       productModal.hide();
-      this.tempProduct = {};
+      this.tempProduct = { imagesUrl: [] };
     },
     closeDeleteModal() {
       delProductModal.hide();
-      this.tempProduct = {};
+      this.tempProduct = { imagesUrl: [] };
     },
   },
   mounted() {
